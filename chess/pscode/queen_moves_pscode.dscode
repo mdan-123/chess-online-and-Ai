@@ -1,0 +1,5 @@
+FUNCTION queen_moves(self, row, coloumn, moves):
+BEGIN
+    rook_moves(self, row, coloumn, moves)
+    bishop_moves(self, row, coloumn, moves)
+END

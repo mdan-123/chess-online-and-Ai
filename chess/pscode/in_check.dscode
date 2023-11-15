@@ -1,0 +1,26 @@
+FUNCTION in_check(self):
+BEGIN
+    IF self.player_1 THEN
+        self.player_1 = not self.player_1
+        opp_moves = self.acquire_every_moves()
+        FOR move in opp_moves:
+            IF move.finish_r == self.wk_location[0] AND move.finish_c == self.wk_location[1] THEN
+                self.player_1 = not self.player_1
+                RETURN True
+            ENDIF
+        self.player_1 = not self.player_1
+        RETURN false
+        END FOR
+    ELSE:
+        self.player_1 = not self.player_1
+        opp_moves = self.acquire_every_moves()
+        FOR move in opp_moves:
+            IF move.finish_r == self.wk_location[0] AND move.finish_c == self.wk_location[1] THEN
+                self.player_1 = not self.player_1
+                RETURN True
+            ENDIF
+        self.player_1 = not self.player_1
+        RETURN false
+        END FOR
+    ENDIF
+END

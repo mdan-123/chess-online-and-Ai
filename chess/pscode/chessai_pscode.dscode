@@ -1,0 +1,73 @@
+FUNCTION ai_move(self):
+BEGIN
+    bestmove = NONE
+    bestscore = -INFINITY
+    alpha = -INFINITY
+    beta = INFINITY
+    valid_moves= self.game.get_correct_moves()
+    FOR move in enumerate(valid_moves) THEN
+        if self.suicide THEN
+            RETURN
+        ENDIF
+    alpha = -INFINITY
+    beta = INFINITY
+    self.game.make_move(move)
+    current_state_value = self.alphabeta(beta, alpha, self.depth-1)
+    IF current_state_value > bestscore THEN
+        bestscore = current_state_value
+        bestmove = move
+    ENDIF
+    IF current_state_value > alpha THEN
+        alpha = current_state_value
+    self.game.reverse_move()
+    PRINT (bestmove, bestscore)
+    RETURN bestmove
+    ENDFOR
+END
+
+
+FUNCTION alphabeta(self, alpha, beta, DEPTH):
+BEGIN
+    best_total = -INFINITY
+    IF self.depth = 0 THEN
+        RETURN self.quiet_move(alpha, beta)
+    FOR move in self.game.get_correct_moves()
+        self.game.make_move(move)
+        total = alphabeta(beta, alpha, self.depth -1)
+        self.game.reverse_move()
+        IF total > best_total THEN
+            best_total = total
+        ENDIF
+        IF total>= beta THEN
+            RETURN total
+        ENDIF
+        IF total> alpha THEN
+            alpha = best_total
+    RETURN best_total
+    ENDFOR
+END
+
+
+FUNCTION quiet_move(self, alpha, beta):
+BEGIN
+    current_state = self.current_state_of_board()
+    IF current_state >= beta THEN
+        RETURN beta
+    ENDIF
+    IF current_state > alpha THEN
+        alpha = current_state
+    ENDIF
+    FOR move in self.game.get_correct_moves() or [] THEN
+        self.game.make_move(move)
+        total = self.quiet_move(beta, alpha, self.depth -1)
+        self.game.reverse_move()
+        IF total>= beta THEN
+            RETURN beta
+        ENDIF
+        IF total> alpha THEN
+            alpha = total
+        ENDIF
+    ENDFOR
+END
+
+    

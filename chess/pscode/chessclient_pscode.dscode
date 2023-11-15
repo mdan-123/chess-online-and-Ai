@@ -1,0 +1,95 @@
+FUNCTION connected_to_peer(self):
+BEGIN
+    RETURN self.peer_socket is not NONE
+END
+
+FUNCTION is_player_1(self):
+BEGIN
+    RETURN self.server_socket is not NONE
+END
+
+FUNCTION is_player_2(self):
+BEGIN
+    RETURN not self.is_player_1
+END
+
+FUNCTION create_game(self,host,port):
+BEGIN
+    self.server_socket = socket.object()
+    self.server_socket.bind((host,port))
+    self.server_socket.listen(1)
+    PRINT "Server started on {host}:{port}, awaiting connection..."
+    self.peer_socket, self.peer_address = self.server_socket.accept()
+    PRINT "Connection from {self.peer_address}"
+END
+
+FUNCTION join_game(self,host,port):
+BEGIN
+    self.peer_socket = socket.object()
+    self.peer_socket.connect((host,port))
+    PRINT "Connected to {host}:{port}"
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FUNCTION get_data_from_peer(self,valid_responses):
+BEGIN
+    TRY THEN
+        PRINT "Waiting for data from peer..."
+        data = NONE
+        WHILE data is NONE DO
+            data = self.peer_socket.recv(1024)
+        data=  data.decode
+        PRINT "Received data from peer: {data}"
+        IF data not in valid_responses THEN
+            PRINT "Invalid response from peer: {data}"
+            RAISE ValueError("Invalid response from peer: {data}")
+        END
+        PRINT "sending success message to peer"
+        response = "success"
+        self.peer_socket.sendall(response.encode)
+
+    EXCEPT Exception as e THEN
+        PRINT "Error receiving data from peer: {e}"
+        RAISE e
+        RETURN NONE
+    
+END
+
+
+FUNCTION send_data(self,data):
+BEGIN 
+    PRINT "Sending data to peer: {data}"
+    self.peer_socket.sendall(data.encode)
+    data = NONE
+    WHILE data is NONE DO
+        data = self.peer_socket.recv(1024)
+    response = data.decode()
+    IF response != "success" THEN
+        PRINT "Error sending data to peer: {response}"
+        RAISE ValueError("Error sending data to peer: {response}")
+    ELSE
+        PRINT "received failure message"
+        RETURN False
+END

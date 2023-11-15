@@ -1,0 +1,35 @@
+FUNCTION render(self):
+BEGIN
+    surface.blit(background, (0, 0))
+    surface.blit(title, (400, 0))
+    FOR button in buttons THEN
+        button.draw()
+        button.process()
+        IF button.clicked THEN
+            redirect_function[button.name]()
+        END IF
+    END FOR
+END
+
+FUNCTION redirect_start_server(self):
+BEGIN
+    creategamemenu = CreateGameMenu(surface, width, height, screen)
+    creategamemenu.run()
+END
+
+FUNCTION redirect_join_server(self):
+BEGIN
+    joingamemenu = JoinGameMenu(surface, width, height, screen)
+    joingamemenu.run()
+END
+
+FUNCTION redirect_quit(self):
+BEGIN
+    pygame.quit()
+    sys.exit()
+END
+
+FUNCTION redirect_ai(self):
+BEGIN
+    run chessmain(ai=True)
+END

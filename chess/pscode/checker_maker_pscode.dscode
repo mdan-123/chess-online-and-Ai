@@ -1,0 +1,23 @@
+FUNCTION checker_maker(self, moves):
+BEGIN
+    IF len(moves) == 0:
+        IF self.in_check():
+            IF self.player_1:
+                self.win = True
+                self.checkmate = True
+                self.end = True
+                RETURN self.win, self.checkmate, self.end
+            ELSE:
+                self.win = False
+                self.checkmate = True
+                self.end = True
+                RETURN self.win, self.checkmate, self.end
+        ELSE:
+            self.stalemate = True
+            self.tie = True
+            self.end = True
+            RETURN self.stalemate, self.tie, self.end
+        ENDIF
+    RETURN self.win, self.checkmate, self.end, self.stalemate, self.tie, self.end
+    ENDIF
+END

@@ -1,0 +1,31 @@
+FUNCTION player_2(self):
+BEGIN
+    RETURN not self.player_1
+END
+
+FUNCTION connected(self):
+BEGIN
+    ready = True
+    RETURN ready
+END
+
+FUNCTION win(self):
+BEGIN
+    IF self.checkmate == True THEN
+        win = True
+        RETURN win
+    ELSE
+        RETURN win
+    END
+END
+
+FUNCTION tie(self):
+BEGIN
+    IF self.checkmate == False AND self.stalemate == True THEN
+        tie = True
+        RETURN tie
+    ELSE
+        RETURN tie
+    END
+END
+

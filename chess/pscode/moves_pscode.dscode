@@ -1,0 +1,47 @@
+FUNCTION acquire_every_move(self):
+BEGIN
+    moves = []
+    FOR row in range(0, 8):
+        FOR column in range(0, 8):
+            turn = self.board[row][col][0]
+            IF (turn == 'w' and self.player_1) OR (turn == 'b' and not self.player_1) THEN
+                piece = self.board[row][col][1]
+                IF piece == 'p' THEN
+                    self.acquire_pawn_moves(row, column, moves)
+                ELSE IF piece == 'r' THEN
+                    self.acquire_rook_moves(row, column, moves)
+                ELSE IF piece == 'n' THEN
+                    self.acquire_knight_moves(row, column, moves)
+                ELSE IF piece == 'b' THEN
+                    self.acquire_bishop_moves(row, column, moves)
+                ELSE IF piece == 'q' THEN
+                    self.acquire_queen_moves(row, column, moves)
+                ELSE IF piece == 'k' THEN
+                    self.acquire_king_moves(row, column, moves)
+                END IF
+            END IF
+        END FOR
+    END FOR
+    RETURN moves
+END
+
+FUNCTION get_corect_moves(self):
+BEGIN
+    moves = self.acquire_every_move()
+    IF self.player_1 THEN
+        self.castle_moves(self.white_king_location[0], self.white_king_location[1], moves)
+    ELSE
+        self.castle_moves(self.black_king_location[0], self.black_king_location[1], moves)
+    END IF
+
+    FOR i in range(len(moves)-1):
+        self.make_move(moves[i])
+        self.player_1 = not self.player_1
+        IF self.in_check() THEN
+            moves.remove(moves[i])
+        self.player_1 = not self.player_1
+        self.reverse_move()
+        self.checker_maker(moves)
+    END FOR
+    RETURN moves
+END

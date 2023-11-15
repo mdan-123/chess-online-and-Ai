@@ -1,0 +1,18 @@
+FUNCTION create_game(self):
+BEGIN
+    WHILE buttons['Port'] and buttons['IP'] != '' THEN
+    port = buttons['Port'].input_value
+    host = buttons['IP'].input_value
+    create_or_join = 'C'
+    RUN chessmain(port, host, create_game,  play_online = True)
+    ENDWHILE
+END
+
+FUNCTION create_game(self):
+    WHILE buttons['Port'] and buttons['IP'] != '' THEN
+        port = buttons['Port'].input_value
+        host = buttons['IP'].input_value
+        create_or_join = 'J'
+        RUN chessmain(port, host, create_or_join, play_online = True)
+    ENDWHILE
+END

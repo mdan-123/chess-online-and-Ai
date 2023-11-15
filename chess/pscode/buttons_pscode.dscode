@@ -1,0 +1,30 @@
+FUNCTION process (self):
+BEGIN
+    mouse_pos = pygame.mouse.get_pos()
+    fill(buttonsurface(colours_for_buttons['normal]))
+    IF buttonsurface = mouse_pos then
+        fill(buttonsurface(colours_for_buttons['hover']))
+        IF mousebuttondown THEN
+            fill(buttonsurface(colours_for_buttons['clicked']))
+            clicked = True
+        END IF
+    END IF
+    render_text()
+END
+
+
+FUNCTION render_text (self):
+BEGIN
+    text_rect.center = (buttonsurface.get_width()/2, buttonsurface.get_height()/2)
+    buttonsurface.blit(text, text_rect)
+END
+
+
+
+FUNCTION draw (self):
+BEGIN
+    draw.rect(buttonsurface, (0,0,0))
+    IF text != None THEN
+        render_text()
+    END IF
+END

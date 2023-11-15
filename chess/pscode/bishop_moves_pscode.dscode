@@ -1,0 +1,69 @@
+FUNCTION bishop_moves(self, row, coloumn, moves):
+BEGIN
+    left= right=up=down
+    e = 'b' if self.player_1 else 'w'
+    stop = False
+    
+    WHILE coloumn - left>=0 AND row-up>=0 AND not stop THEN
+        end_piece = self.board[row-up][coloumn-left]
+        IF end_piece == ' ' THEN
+            moves.append((row-up, coloumn-left))
+            left+=1
+            up+=1
+        ELSEIF end_piece[0] == e:
+            moves.append((row-up, coloumn-left))
+            stop = True
+        ELSE:
+            stop = True
+        ENDIF
+    ENDWHILE
+
+
+    left = 1
+    stop = False
+    WHILE coloumn - left>=0 AND row+down<8 AND not stop THEN
+        end_piece = self.board[row+down][coloumn-left]
+        IF end_piece == ' ' THEN
+            moves.append((row+down, coloumn-left))
+            left+=1
+            down+=1
+        ELSEIF end_piece[0] == e:
+            moves.append((row+down, coloumn-left))
+            stop = True
+        ELSE:
+            stop = True
+        ENDIF
+    ENDWHILE
+
+    up=1
+    stop = False
+    WHILE coloumn-left>=0 AND row+down<8 AND not stop THEN
+        end_piece = self.panel[row+down][coloumn+right]
+        IF end_piece == ' ' THEN
+            moves.append((row+down, coloumn+right))
+            right+=1
+            down+=1
+        ELSEIF end_piece[0] == e:
+            moves.append((row+down, coloumn+right))
+            stop = True
+        ELSE:
+            stop = True
+        ENDIF
+    ENDWHILE
+
+    down = right=1
+    stop = False
+    WHILE coloumn+right<8 AND row+down<8 AND not stop THEN
+        end_piece = self.board[row+down][coloumn+right]
+        IF end_piece == ' ' THEN
+            moves.append((row+down, coloumn+right))
+            right+=1
+            down+=1
+        ELSEIF end_piece[0] == e:
+            moves.append((row+down, coloumn+right))
+            stop = True
+        ELSE:
+            stop = True
+        ENDIF
+    ENDWHILE
+END

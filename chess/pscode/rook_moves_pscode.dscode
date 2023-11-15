@@ -1,0 +1,63 @@
+FUNCTION rook_moves(self, row, coloumn, moves):
+BEGIN
+    left = right= up = down = 0
+    e = 'b' IF self.player_1 == 'w' ELSE 'w'
+
+    stop = False
+    WHILE coloumn - left>=0 and not stop THEN
+        end_piece = self.board[row][coloumn - left]
+        IF end_piece == ' ' THEN
+            moves.append((row, coloumn - left))
+            left+=1
+        ELSEIF end_piece[0] == e THEN
+            moves.append((row, coloumn - left))
+            stop = True
+        ELSE
+            stop = True
+        ENDIF
+    ENDWHILE
+
+
+    stop = False
+    WHILE coloumn + right<8 and not stop THEN
+        end_piece = self.board[row][coloumn + right]
+        IF end_piece == ' ' THEN
+            moves.append((row, coloumn + right))
+            right+=1
+        ELSEIF end_piece[0] == e THEN
+            moves.append((row, coloumn + right))
+            stop = True
+        ELSE
+            stop = True
+        ENDIF
+    ENDWHILE
+
+    stop = False
+    WHILE row - up>=0 and not stop THEN
+        end_piece = self.board[row - up][coloumn]
+        IF end_piece == ' ' THEN
+            moves.append((row - up, coloumn))
+            up+=1
+        ELSEIF end_piece[0] == e THEN
+            moves.append((row - up, coloumn))
+            stop = True
+        ELSE
+            stop = True
+        ENDIF
+    ENDWHILE
+
+    stop = False
+    WHILE row + down<8 and not stop THEN
+        end_piece = self.board[row + down][coloumn]
+        IF end_piece == ' ' THEN
+            moves.append((row + down, coloumn))
+            down+=1
+        ELSEIF end_piece[0] == e THEN
+            moves.append((row + down, coloumn))
+            stop = True
+        ELSE
+            stop = True
+        ENDIF
+    ENDWHILE
+END
+            

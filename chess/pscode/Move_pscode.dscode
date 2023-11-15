@@ -1,0 +1,16 @@
+FUNCTION serialise(self):
+BEGIN
+    RETURN f"[{self.beg_r}{self.beg_c}][{self.finish_r}{self.finish_c}](c{int(self.is_c_move)})(p{int(self.is_ep)})"
+END
+
+FUNCTION fromseralisedrepreseantation(self, game, move_string):
+BEGIN
+    self.beg_r = int(move_string[1])
+    self.beg_c = int(move_string[2])
+    self.finish_r = int(move_string[5])
+    self.finish_c = int(move_string[6])
+    self.is_castle = bool(int(move_string[10])) == '1'
+    self.is_enpassant = bool(int(move_string[4])) == '1'
+    RETURN ChessMove(self.beg_r, self.beg_c, self.finish_r, self.finish_c, self.is_castle, self.is_enpassant)
+END
+

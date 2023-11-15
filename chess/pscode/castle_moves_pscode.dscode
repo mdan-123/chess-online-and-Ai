@@ -1,0 +1,72 @@
+FUNCTION castle_moves(self, row, coloumn, moves):
+BEGIN
+    IF self.player_1 THEN
+        self.player_1 = not self.player_1
+        opp_moves = self.acquire_every_move()
+        FOR move in opp_moves:
+            IF move.finish_r == row and move.finish_c == coloumn THEN
+                self.player_1 = not self.player_1
+                RETURN 
+            ENDIF
+            self.player_1 = not self.player_1
+        ENDFOR
+    ENDIF
+    IF (self.player_1 and self.live_castle_possible.wks) OR (not self.player_1 and self.live_castle_possible.bks) THEN
+        self.king_side_castle(row, coloumn, moves)
+    ENDIF
+    IF (self.player_1 and self.live_castle_possible.wqs) OR (not self.player_1 and self.live_castle_possible.bqs) THEN
+        self.queen_side_castle(row, coloumn, moves)
+    ENDIF
+END
+
+FUNCTION king_side_castle(self, row, coloumn , moves):
+BEGIN
+    castling_sqaures_in_check = False
+    IF self.panel[row][coloumn + 1] AND self.panel[row][coloumn + 2] == '__' THEN
+        self.player_1 = not self.player_1
+        opp_moves = self.acquire_every_move()
+        FOR move in opp_moves:
+            IF (move.finish_r == row and move.finish_c == coloumn + 1) OR (move.finish_r ==  row and move.finish_c == coloumn+1) THEN
+                castling_sqaures_in_check = True
+                self.player_1 = not self.player_1
+                RETURN castling_sqaures_in_check
+            ENDIF
+            self.player_1 = not self.player_1
+        ENDFOR
+        IF not castling_sqaures_in_check THEN
+            moves.append(Move((row, coloumn), (row, coloumn + 2), self.panel, is_castle = True))
+        ENDIF
+        IF castling_sqaures_in_check THEN
+            RETURN
+        ENDIF
+    ENDIF
+END
+
+
+
+
+
+
+
+FUNCTION queen_side_castle(self, row, coloumn , moves):
+BEGIN
+    castling_sqaures_in_check = False
+    IF self.panel[row][coloumn - 1] AND self.panel[row][coloumn - 2] AND self.panel[row][coloumn - 3] == '__' THEN
+        self.player_1 = not self.player_1
+        opp_moves = self.acquire_every_move()
+        FOR move in opp_moves:
+            IF (move.finish_r == row and move.finish_c == coloumn - 1) OR (move.finish_r ==  row and move.finish_c == coloumn-2) THEN
+                castling_sqaures_in_check = True
+                self.player_1 = not self.player_1
+                RETURN castling_sqaures_in_check
+            ENDIF
+            self.player_1 = not self.player_1
+        ENDFOR
+        IF not castling_sqaures_in_check THEN
+            moves.append(Move((row, coloumn), (row, coloumn - 2), self.panel, is_castle = True))
+        ENDIF
+        IF castling_sqaures_in_check THEN
+            RETURN
+        ENDIF
+    ENDIF
+END

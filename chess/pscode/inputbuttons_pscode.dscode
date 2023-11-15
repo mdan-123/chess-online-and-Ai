@@ -1,0 +1,11 @@
+FUNCTION get_input(self):
+BEGIN
+    IF backspace_pressed THEN
+        IF input_string != "" THEN
+            input_string = input_string[0:-1]
+        END IF
+    ELSE IF enter_pressed THEN
+        input_value = USERINPUT
+    END
+END
+
