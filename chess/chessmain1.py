@@ -178,7 +178,7 @@ def main(host, port, create_or_join ,play_online, play_ai):
                     print("Made move") #print made move
                 elif not ai.thinking: #if the ai is not thinking
                     ai_thinking_thread = threading.Thread(target=ai) #create a thread for the ai
-                    print("Thinking...") 
+                    print("Deciding which move to make") 
                     ai_thinking_thread.start() #start the thread
             else: #if not playing ai
                 valid_moves = game.get_correct_moves() #get the valid moves
